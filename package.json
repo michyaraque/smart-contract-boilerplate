@@ -1,5 +1,5 @@
 {
-  "name": "sc-boilerplate",
+  "name": "smart-contract-boilerplate",
   "version": "1.0.0",
   "author": "Michael Araque",
   "license": "MIT",
@@ -9,7 +9,11 @@
     "test:light": "npx hardhat test test/Token.ts",
     "test": "npx hardhat coverage",
     "flatten": "npx hardhat flatten > output.sol",
-    "uml": "sol2uml ./contracts -i test -o ./Contract.png -f png"
+    "uml": "npx sol2uml ./contracts -i test -o ./Contract.png -f png"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/michyaraque/smart-contract-boilerplate"
   },
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.3",
