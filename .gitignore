@@ -9,5 +9,3 @@ cache
 artifacts
 output.sol
 Contract.png
-
-*.lock
