@@ -1,0 +1,35 @@
+name: Test
+on:
+  push:
+    branches: [master, BO-0001]
+
+  pull_request:
+    branches: [master, BO-0001]
+    paths:
+      - "contracts/**"
+      - "test/**"
+      - "scripts/**"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x]
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install packages
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "yarn"
+      - run: yarn --ignore-scripts
+        shell: bash
+      - name: Create local node and deploy
+        run: |
+          yarn hardhat node &
+          yarn hardhat run scripts/deploy.ts --network localhost
+      - name: 🧪 Run Tests
+        run: yarn hardhat test
