@@ -1,10 +1,6 @@
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import hre from 'hardhat'
 
 async function main() {
-  let deployer: SignerWithAddress;
-
-  [deployer] = (hre as any).customSigners.concat(await hre.ethers.getSigners());
 
   const Contract = await hre.ethers.getContractFactory("Token");
   const contract = await Contract.deploy()
@@ -17,9 +13,11 @@ async function main() {
       contract: "contracts/Token.sol:Token",
       constructorArguments: []
     });
-  } catch (err: any) {
-    if (err.message.includes("Reason: Already Verified")) {
-      console.log("Contract is already verified!");
+  } catch (err: unknown) {
+    if (err instanceof Error) {
+      if (err.message.includes("Reason: Already Verified")) {
+        console.log("Contract is already verified!");
+      }
     }
   }
 }

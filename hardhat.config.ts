@@ -2,7 +2,7 @@
 import * as dotenv from "dotenv";
 dotenv.config()
 
-import { extendEnvironment, HardhatUserConfig } from "hardhat/config";
+import { extendEnvironment } from "hardhat/config";
 import "@nomiclabs/hardhat-waffle";
 import "@nomiclabs/hardhat-etherscan";
 import "@nomiclabs/hardhat-ethers";
@@ -12,6 +12,10 @@ import "hardhat-gas-reporter";
 import "hardhat-deploy";
 import "./tasks";
 import { ethers } from "ethers";
+import {
+  FullHardhatUserConfig,
+  HardhatRuntimeEnvironmentExtended
+} from './@types/hardhatExtended'
 
 /* An array of private keys. */
 const private_keys: string[] = [
@@ -19,19 +23,12 @@ const private_keys: string[] = [
 ];
 
 /* Adding a custom signer to the hardhat environment. */
-extendEnvironment((hre: any) => {
-  if(private_keys[0]) {
-    const formatedCustomKey = hre.ethers.Wallet(private_keys[0], hre.ethers.provider)
+extendEnvironment((hre: HardhatRuntimeEnvironmentExtended) => {
+  if (private_keys[0]) {
+    const formatedCustomKey = new hre.ethers.Wallet(private_keys[0], hre.ethers.provider)
     hre.customSigners = formatedCustomKey;
   }
 });
-
-/* Extending the HardhatUserConfig interface. */
-interface FullHardhatUserConfig extends HardhatUserConfig {
-  etherscan: {
-    apiKey: Record<string, any>;
-  }
-}
 
 /**
  * It creates a random wallet.
